@@ -123,10 +123,11 @@ class CASPT2(Method):
         super().__init__("smith", method=method, ms = ms, xms = xms, sssr = sssr, shift = shift)
 
 class Optimize:
-    def __init__(self, *, target = 0, opttype = "energy", method = HF() ):
+    def __init__(self, method = HF(), *, target = 0, opttype = "energy", **kwargs):
         self.params = dict()
         self.set_keyword("target", target)
         self.set_keyword("opttype", opttype)
+        self.params.update(kwargs)
 
         self.methods = []
         if isinstance(method, list):
