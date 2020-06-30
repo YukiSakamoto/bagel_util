@@ -6,7 +6,7 @@
  pip install git+https://github.com/YukiSakamoto/bagel_util
  ```
 
-## Usage and Examples
+## Examples
 
 ### Simple Example: 
 
@@ -18,9 +18,30 @@
 	print(bagel.to_json())
 ```
 
-### Objects
+### Example: Single point calculation
+ ```python
+	from bagel_util.bagel_util import *
+    geometry_file = "test.xyz"	#Please prepare some XYZ file!
+    mol = Molecule(geom_file = geometry_file, basis = "6-31G", df_basis = "svp-jkfit")
+    bagel = Bagel(mol, HF(threshold=1.0e-10) )
+    print( bagel.to_json() )
+ ```
 
-#### Bagel
+### Example : Geometry Optimization 
+ ```python
+	from bagel_util.bagel_util import *
+    geometry_file = "test.xyz"	#Please prepare some XYZ file!
+    mol = Molecule(geom_file= geometry_file, basis = "6-31G", df_basis = "svp-jkfit")
+    opt = Optimize( method = CASSCF()  )
+    bagel = Bagel(mol, opt)
+    print( bagel.to_json() )
+
+ ```
+
+
+## Objects
+
+### Bagel
 
 ```python
 class bagel_util.Bagel(molecule, method)
@@ -34,7 +55,7 @@ class bagel_util.Bagel(molecule, method)
 
 * `to_json()` function generates the string of json.
 
-#### Molecule
+### Molecule
 
 ```python
 class bagel_util.Molecule(*, geom_file = None, basis = "6-31G", df_basis = "svp-jkfit", **kwargs)
@@ -48,7 +69,7 @@ class bagel_util.Molecule(*, geom_file = None, basis = "6-31G", df_basis = "svp-
 
 * If other parameters are specified in keyword-argument style(`keyname=value`), they will be converted into json format *as it is*.
 
-#### Method
+### Method
 
 ```python
 class bagel_util.Method(title, **kwargs)
@@ -60,30 +81,11 @@ class bagel_util.Method(title, **kwargs)
 
 * Other parameters are optional. All the parameters are converted into json *as it is*.
 
-### Example: Single point calculation
- ```python
-	from bagel_util.bagel_util import *
-    geometry_file = "test.xyz"	#Please prepare some XYZ file!
-    mol = Molecule(geom_file = geometry_file, basis = "6-31G", df_basis = "svp-jkfit")
-    bagel = Bagel(mol, HF(threshold=1.0e-10) )
-    print( bagel.to_json() )
- ```
+### HF and CASSCF
 
-#### HF and CASSCF
 Some computational methods, such as `HF` ,`CASSCF`, are defined as special class.
 
-In these class, the `title` is unnecessary. Furthermore, some parameters and default values are specified.
-
-### Example : Geometry Optimization 
- ```python
-	from bagel_util.bagel_util import *
-    geometry_file = "test.xyz"	#Please prepare some XYZ file!
-    mol = Molecule(geom_file= geometry_file, basis = "6-31G", df_basis = "svp-jkfit")
-    opt = Optimize( method = CASSCF()  )
-    bagel = Bagel(mol, opt)
-    print( bagel.to_json() )
-
- ```
+In these classes, the `title` is unnecessary. Furthermore, default values for some essential parameters are specified.
 
 #### Optimize
 
