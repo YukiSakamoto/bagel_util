@@ -87,7 +87,7 @@ Some computational methods, such as `HF` ,`CASSCF`, are defined as special class
 
 In these classes, the `title` is unnecessary. Furthermore, default values for some essential parameters are specified.
 
-#### Optimize
+### Optimize
 
 ```python
 class bagel_util.Optimize(method = HF(), *, target = 0, opttype = "energy", **kwargs):
