@@ -6,7 +6,9 @@
  pip install git+https://github.com/YukiSakamoto/bagel_util
  ```
 
-## Example
+## Usage and Examples
+
+### Example 1: 
 
  ```python
 	from bagel_util.bagel_util import *
@@ -16,15 +18,27 @@
 	print(bagel.to_json())
 ```
 
+#### Bagel
+
 `Bagel` requires two arguments, molecule and methods. 
 
-* The first argument, molecule, is a instance of `Molecule` class. 
+* The first argument, molecule, is an instance of `Molecule` class. 
 
-* The second argument, methods, is a instance of `Molecule` class or the list of `Molecule` object.
+* The second argument, methods, is an instance of `Molecule` class or the list of `Molecule` object.
 
-* The instalce method `to_json` generate the string of json.
+* `to_json()` function generates the string of json.
 
-### Example 1: 
+#### Molecule
+
+`Molecule` class has the information of the geometry, basis-set, density-fitting basis-set.
+
+#### Method
+
+`Method` class has the information for computational method.
+
+The first argument is `title` such as `hf`, `casscf`. The rest arguments are converted into json as it is.
+
+### Example 3: 
  ```python
 	from bagel_util.bagel_util import *
 	mol = Molecule(filename = "test.xyz", basis = "6-31G", df_basis = "svp-jkfit")
