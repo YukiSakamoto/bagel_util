@@ -5,6 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name = "bagel_util",
+    packages=['bagel_util'],
     version="0.0.1",
     author="yukisakamoto",
     author_email="sakamotoyuki.jpn@gmail.com",
