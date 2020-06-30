@@ -37,7 +37,7 @@ class bagel_util.Bagel(molecule, method)
 #### Molecule
 
 ```python
-class bagel_util.BMolecule(*, geom_file = None, basis = "6-31G", df_basis = "svp-jkfit", **kwargs)
+class bagel_util.Molecule(*, geom_file = None, basis = "6-31G", df_basis = "svp-jkfit", **kwargs)
 ```
 
 `Molecule` object has the information of the geometry, basis-set, density-fitting basis-set.
