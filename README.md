@@ -14,8 +14,7 @@
 	from bagel_util.bagel_util import *
     geometry_file = "test.xyz"	#Please prepare some XYZ file!
     mol = Molecule(filename = geometry_file, basis = "6-31G", df_basis = "svp-jkfit")
-    opt = Optimize( method = CASSCF()  )
-    bagel = Bagel(mol, opt)
+    bagel = Bagel(mol, HF(threshold=1.0e-10) )
     print( bagel.to_json() )
 
  ```
@@ -26,7 +25,8 @@
 	from bagel_util.bagel_util import *
     geometry_file = "test.xyz"	#Please prepare some XYZ file!
     mol = Molecule(filename = geometry_file, basis = "6-31G", df_basis = "svp-jkfit")
-    bagel = Bagel(mol, HF(threshold=1.0e-10) )
+    opt = Optimize( method = CASSCF()  )
+    bagel = Bagel(mol, opt)
     print( bagel.to_json() )
 
  ```
