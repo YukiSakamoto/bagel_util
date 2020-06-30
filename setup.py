@@ -4,14 +4,13 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name = "bagel_util"
+    name = "bagel_util",
     version="0.0.1",
     author="yukisakamoto",
     author_email="sakamotoyuki.jpn@gmail.com",
     description="input generator of BAGEL",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    #url="https://github.com/pypa/sampleproject",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
