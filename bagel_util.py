@@ -21,13 +21,19 @@ class Bagel:
                 ret["bagel"].append( m.as_dict() )
         return ret
 
+    def to_json(self, ensure_ascii = True, indent = 2, **kwargs):
+        s = json.dumps(self.as_dict(), ensure_ascii = ensure_ascii, indent = indent, **kwargs)
+        return s
+
 class Molecule:
-    def __init__(self,  *, filename = None, basis = "6-31G", df_basis = "svp-jkfit"):
+    def __init__(self,  *, filename = None, basis = "6-31G", df_basis = "svp-jkfit", **kwargs):
         self.params = dict()
         self.geometry = []
 
         self.set_keyword("basis", basis)
         self.set_keyword("df_basis", df_basis)
+        for k,v in kwargs.items():
+            self.set_keyword(k,v)
 
         if filename != None:
             self.read_file(filename)
@@ -79,9 +85,49 @@ class Molecule:
 
         return ret
 
+class Method(object):
+    def __init__(self, title, **kwargs):
+        if "title" in kwargs:
+            raise
+        self.title = title
+        self.params = {}
+        self.set_params(**kwargs)
+
+    def set_keyword(self, key, value):
+        self.params[key] = value
+
+    def set_params(self, **kwargs):
+        for k,v in kwargs.items():
+            if k in self.params:
+                "Warn ({title}): the value = {key} is replaced.  {old_v} => {new_v}".format(
+                        title = self.title, key = k , old_v = self.params[k], new_v = v)
+            self.params[k] = v
+
+    def as_dict(self):
+        ret = dict()
+        ret["title"] = self.title
+        for k,v in self.params.items():
+            ret[k] = v
+        return ret
+
+class HF(Method):
+    def __init__(self, hf_type = "hf" ,*, thresh = 1.0e-8, **kwargs):
+        super().__init__(hf_type, thresh = thresh, **kwargs)
+
+class CASSCF(Method):
+    def __init__(self, *, nstates = 1, nact = 0, nclosed = 0, active = [], **kwargs):
+        super().__init__("casscf", nstates = nstates, nact = nact, nclosed = nclosed, active = active, **kwargs)
+
+class CASPT2(Method):
+    def __init__(self, *, method = "caspt2", ms = True, xms = True, sssr = True, shift = 0.0, **kwargs):
+        super().__init__("smith", method=method, ms = ms, xms = xms, sssr = sssr, shift = shift)
+
 class Optimize:
-    def __init__(self, *, target = 0, method = {"title" :"hf", "thresh" :  1.0e-12}):
-        self.target = 0
+    def __init__(self, *, target = 0, opttype = "energy", method = HF() ):
+        self.params = dict()
+        self.set_keyword("target", target)
+        self.set_keyword("opttype", opttype)
+
         self.methods = []
         if isinstance(method, list):
             for m in method:
@@ -89,10 +135,16 @@ class Optimize:
         else:
             self.methods.append(method)
 
+    def set_keyword(self, key, value):
+        self.params[key] = value
+
     def as_dict(self):
         ret = dict()
         ret["title"] = "optimize"
-        ret["target"] = self.target
+
+        for k,v in self.params.items():
+            ret[k] = v
+
         ret["method"] = []
         for m in self.methods:
             if isinstance(m, dict):
@@ -101,20 +153,6 @@ class Optimize:
                 ret["method"].append( m.as_dict() )
         return ret
 
-class Method:
-    def __init__(self, title, **kwargs):
-        self.title = title
-        self.params = {}
-        self.params.update(kwargs)
-
-    def set_keyword(self, key, value):
-        self.params[key] = value
-    def as_dict(self):
-        ret = dict()
-        ret["title"] = self.title
-        for k,v in self.params.items():
-            ret[k] = v
-        return ret
 
 if __name__ == '__main__':
     import sys
@@ -123,7 +161,7 @@ if __name__ == '__main__':
         geometry_file = sys.argv[1]
 
     mol = Molecule(filename = geometry_file, basis = "6-31G", df_basis = "svp-jkfit")
-    opt = Optimize(target = 0, method = [Method("hf", thresh = 1.0e-8)] )
-    bagel = Bagel(mol, opt)
-    print( json.dumps( bagel.as_dict(), ensure_ascii = True, indent = 2 ) )
+    opt = Optimize( method = CASSCF()  )
+    bagel = Bagel(mol, HF("uhf") )
+    print( bagel.to_json() )
     
