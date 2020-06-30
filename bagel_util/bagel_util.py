@@ -26,7 +26,7 @@ class Bagel:
         return s
 
 class Molecule:
-    def __init__(self,  *, filename = None, basis = "6-31G", df_basis = "svp-jkfit", **kwargs):
+    def __init__(self, *, geom_file = None, basis = "6-31G", df_basis = "svp-jkfit", **kwargs):
         self.params = dict()
         self.geometry = []
 
@@ -35,8 +35,8 @@ class Molecule:
         for k,v in kwargs.items():
             self.set_keyword(k,v)
 
-        if filename != None:
-            self.read_file(filename)
+        if geom_file != None:
+            self.read_file(geom_file)
 
     def set_keyword(self, key, value):
         self.params[key] = value
