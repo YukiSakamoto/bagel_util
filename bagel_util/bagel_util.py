@@ -26,12 +26,13 @@ class Bagel:
         return s
 
 class Molecule:
-    def __init__(self, *, geom_file = None, basis = "6-31G", df_basis = "svp-jkfit", **kwargs):
+    def __init__(self, *, geom_file = None, basis = "6-31G", df_basis = "svp-jkfit", angstrom = False, **kwargs):
         self.params = dict()
         self.geometry = []
 
         self.set_keyword("basis", basis)
         self.set_keyword("df_basis", df_basis)
+        self.set_angstrom(angstrom)
         for k,v in kwargs.items():
             self.set_keyword(k,v)
 
@@ -40,6 +41,14 @@ class Molecule:
 
     def set_keyword(self, key, value):
         self.params[key] = value
+
+    def set_angstrom(self, value):
+        if isinstance(value, bool):
+            if ("angstrom" in self.params) and self.params["angstrom"] != value
+                print( "Wargning: the unit of the geometry: {} is set.".format(value), file = sys.stderr )
+            self.set_keyword("angstrom", value)
+        else:
+            raise "Invalid value for angstrom"
 
     def add_atom(self, atom_type, pos_x, pos_y, pos_z):
         pos = [float(pos_x), float(pos_y), float(pos_z)]
@@ -58,7 +67,8 @@ class Molecule:
 
     def read_xyz(self, filename):
         with open(filename) as f:
-            self.set_keyword("angstrom", True)
+            #self.set_keyword("angstrom", True)
+            self.set_angstrom(True)
             all_lines = f.readlines()
             # 1st line: num of atoms
             num_of_atoms = int(all_lines[0].strip() )
