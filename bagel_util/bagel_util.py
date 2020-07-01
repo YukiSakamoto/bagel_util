@@ -126,6 +126,11 @@ class CASPT2(Method):
     def __init__(self, *, method = "caspt2", ms = True, xms = True, sssr = True, shift = 0.0, **kwargs):
         super().__init__("smith", method=method, ms = ms, xms = xms, sssr = sssr, shift = shift)
 
+class Molden(Method):
+    def __init__(self, *, file = "output.molden", orbitals = True, vibration = False):
+        super().__init__("print", file = file, orbitals = orbitals, vibration = vibration)
+
+
 class Optimize:
     def __init__(self, method = HF(), *, target = 0, opttype = "energy", **kwargs):
         self.params = dict()
