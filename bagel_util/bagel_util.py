@@ -26,6 +26,9 @@ class Bagel:
         s = json.dumps(self.as_dict(), ensure_ascii = ensure_ascii, indent = indent, **kwargs)
         return s
 
+#============================================================
+# Molecule 
+#============================================================
 class Molecule:
     def __init__(self, *, geom_file = None, basis = "6-31G", df_basis = "svp-jkfit", angstrom = False, **kwargs):
         self.params = dict()
@@ -114,6 +117,9 @@ class Method(object):
             ret[k] = v
         return ret
 
+#============================================================
+# Specific Class
+#============================================================
 class HF(Method):
     def __init__(self, hf_type = "hf" ,*, thresh = 1.0e-8, **kwargs):
         super().__init__(hf_type, thresh = thresh, **kwargs)
@@ -128,9 +134,16 @@ class CASPT2(Method):
 
 class Molden(Method):
     def __init__(self, *, file = "output.molden", orbitals = True, vibration = False):
+        # Other arguments are not allowd.
         super().__init__("print", file = file, orbitals = orbitals, vibration = vibration)
 
+class Orbitals(Method):
+    def __init__(self, **kwargs):
+        super().__init__("moprint", **kwargs)
 
+#============================================================
+# Optimize 
+#============================================================
 class Optimize:
     def __init__(self, method = HF(), *, target = 0, opttype = "energy", **kwargs):
         self.params = dict()
