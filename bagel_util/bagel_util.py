@@ -44,7 +44,7 @@ class Molecule:
 
     def set_angstrom(self, value):
         if isinstance(value, bool):
-            if ("angstrom" in self.params) and self.params["angstrom"] != value
+            if ("angstrom" in self.params) and self.params["angstrom"] != value:
                 print( "Wargning: the unit of the geometry: {} is set.".format(value), file = sys.stderr )
             self.set_keyword("angstrom", value)
         else:
