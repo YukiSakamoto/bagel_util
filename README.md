@@ -1,9 +1,11 @@
 # Bagel Util
 
+Utility script for the input of [BAGEL](https://nubakery.org/index.html)
+
 ## Installation
 
  ```shell
- pip install git+https://github.com/YukiSakamoto/bagel_util
+pip install git+https://github.com/YukiSakamoto/bagel_util
  ```
 
 ## Examples
@@ -11,31 +13,30 @@
 ### Simple Example: 
 
  ```python
-	from bagel_util.bagel_util import *
-	mol = Molecule(geom_file = "test.xy", basis = "6-31G", df_basis = "svp-jkfit")
-	method = [Method("hf", maxiter=150)]
-	bagel = Bagel(mol,method)
-	print(bagel.to_json())
+from bagel_util.bagel_util import *
+mol = Molecule(geom_file = "test.xyz", basis = "6-31G", df_basis = "svp-jkfit")
+method = [Method("hf", maxiter=150)]
+bagel = Bagel(mol,method)
+print(bagel.to_json())
 ```
 
 ### Example: Single point calculation
  ```python
-	from bagel_util.bagel_util import *
-    geometry_file = "test.xyz"	#Please prepare some XYZ file!
-    mol = Molecule(geom_file = geometry_file, basis = "6-31G", df_basis = "svp-jkfit")
-    bagel = Bagel(mol, HF(threshold=1.0e-10) )
-    print( bagel.to_json() )
+from bagel_util.bagel_util import *
+geometry_file = "test.xyz"	#Please prepare some XYZ file!
+mol = Molecule(geom_file = geometry_file, basis = "6-31G", df_basis = "svp-jkfit")
+bagel = Bagel(mol, HF(threshold=1.0e-10) )
+print( bagel.to_json() )
  ```
 
 ### Example : Geometry Optimization 
  ```python
-	from bagel_util.bagel_util import *
-    geometry_file = "test.xyz"	#Please prepare some XYZ file!
-    mol = Molecule(geom_file= geometry_file, basis = "6-31G", df_basis = "svp-jkfit")
-    opt = Optimize( method = CASSCF()  )
-    bagel = Bagel(mol, opt)
-    print( bagel.to_json() )
-
+from bagel_util.bagel_util import *
+geometry_file = "test.xyz"	#Please prepare some XYZ file!
+mol = Molecule(geom_file= geometry_file, basis = "6-31G", df_basis = "svp-jkfit")
+opt = Optimize( method = CASSCF()  )
+bagel = Bagel(mol, opt)
+print( bagel.to_json() )
  ```
 
 
@@ -79,7 +80,7 @@ class bagel_util.Method(title, **kwargs)
 
 * `title` is the name of the computational method, such as `hf`, `casscf`. This value is essential.
 
-* Other parameters are optional. All the parameters are converted into json *as it is*.
+* Other parameters are optional. All these parameters are converted into json *as it is*. 
 
 ### HF and CASSCF
 
