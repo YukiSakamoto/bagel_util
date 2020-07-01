@@ -33,7 +33,7 @@ class Molecule:
 
         self.set_keyword("basis", basis)
         self.set_keyword("df_basis", df_basis)
-        self.set_angstrom(angstrom)
+        self.set_keyword("angstrom", angstrom)
         for k,v in kwargs.items():
             self.set_keyword(k,v)
 
@@ -41,15 +41,9 @@ class Molecule:
             self.read_file(geom_file)
 
     def set_keyword(self, key, value):
+        if (key in self.params) and self.params[key] != value:
+            print( "Wargning(Molecule): the parameter: {} is modified. Old: {} -> New: {}".format(key, self.params[key], value), file = sys.stderr )
         self.params[key] = value
-
-    def set_angstrom(self, value):
-        if isinstance(value, bool):
-            if ("angstrom" in self.params) and self.params["angstrom"] != value:
-                print( "Wargning: the unit of the geometry: {} is set.".format(value), file = sys.stderr )
-            self.set_keyword("angstrom", value)
-        else:
-            raise "Invalid value for angstrom"
 
     def add_atom(self, atom_type, pos_x, pos_y, pos_z):
         pos = [float(pos_x), float(pos_y), float(pos_z)]
@@ -68,8 +62,7 @@ class Molecule:
 
     def read_xyz(self, filename):
         with open(filename) as f:
-            #self.set_keyword("angstrom", True)
-            self.set_angstrom(True)
+            self.set_keyword("angstrom", True)
             all_lines = f.readlines()
             # 1st line: num of atoms
             num_of_atoms = int(all_lines[0].strip() )
